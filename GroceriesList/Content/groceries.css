@@ -1,0 +1,14 @@
+﻿
+.h { display:none;}
+.info { font-size: medium; font-style:italic; font-size:8pt; color:#1C5180;}
+.h12 {height:12px;}
+.h2 {height: 2px;}
+.pl5 { padding-left:5px;}
+.pl20 { padding-left:20px;}
+.p20 { padding: 20px;}
+.containing-element .ui-slider-switch { width: 6em; vertical-align:middle;  } 
+.table { display: table; width: 100%; margin-bottom: 10px; }
+.td-left { width: 50%; padding-right: 5px; display: table-cell; }
+.td-right { width: 50%; padding-left: 5px; display: table-cell;}
+.tr { display: table-row;}
+.a-navbar { width: 100%;} 

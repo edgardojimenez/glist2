@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>Groceries</title> 
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="blue" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/jquery.mobile.metro.theme.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/content/groceries.css")" />
+    </head> 
+<body > 
+
+<section id="MPGroceries" data-role="page" >
+    <div id="Loading" class="p20"><h3>Loading...</h3></div>
+    <div id="AfterLoading" class="h">
+        <div data-role="header" data-theme="b">
+            <h1>Grocery List</h1>
+        </div>
+            <div class="ui-scrolllistview" data-role="content" data-theme="b" >
+            <div class="table" >
+                <div class="tr">
+                    <div class="td-left"><a id="clear" data-role="button" data-inline="true" class="a-navbar"  href="#" data-icon="star" data-theme="b">New List</a></div>
+                    <div class="td-right"><a data-role="button" data-inline="true" class="a-navbar" href="#MPProducts" data-icon="check" data-theme="b">Products</a></div>
+                </div>
+            </div>
+            <ul id="listGrocery" data-role="listview" data-inset="true" data-theme="b" data-bind="visible: showList, foreach: groceryArray">
+                <li>
+                   <a class="toggleimage" href="#" data-bind="click: toggleCheck">
+                    <img src="/content/images/uncheck.png" alt="uncheck" class="ui-li-icon off" />
+                    <img src="/content/images/check.png" alt="check" class="ui-li-icon on h" />
+                    &nbsp;
+                    <span data-bind="text: name"></span>
+                </a>
+                <a href="#" data-bind="attr:{id: id}, click: removeGrocery" class="remove" data-theme="b" data-icon="delete">Remove</a>
+                </li>
+            </ul>
+        </div>
+        <div data-theme="b" data-role="content"   id="emptyList" class="pl20" data-bind="text: setEmptyMessage()"></div>
+    </div>
+</section>
+
+<!-- Page 2 -->
+<section id="MPProducts" data-role="page" class="h">
+    <div data-role="header" data-theme="b">
+        <h1>Products</h1>
+    </div>
+    <div class="ui-scrolllistview" data-role="content" data-theme="b">
+        <div class="table">
+            <div class="tr">
+                <div class="td-left"><a data-role="button" data-inline="true" class="a-navbar"  href="#MPGroceries" data-icon="home" data-theme="b">List</a></div>
+                <div class="td-right"><a data-role="button" data-inline="true" class="a-navbar" href="#MPAddProduct" data-icon="plus" data-theme="b">Add</a></div>
+            </div>
+        </div>
+        <ul id="listProduct" data-role="listview" data-inset="true" data-theme="b" data-dividertheme="b" data-filter="true" data-bind="visible: showList, foreach: productArray">
+            <!-- ko if: id() === -1 -->
+            <li class="ui-index" data-role="list-divider" data-bind="text: name"></li>
+            <!-- /ko -->
+            <!-- ko if: id() !== -1 -->
+            <li>
+                <a href="#" data-bind="attr:{id: id}, click: addToGrocery" class="add" ><img src="content/Images/empty.png" class="ui-li-icon" /><span data-bind="text: name"></span></a>
+                <a href="#" data-bind="attr:{id: id}, click: removeProduct" class="remove" data-theme="b" data-icon="delete">Remove</a>
+            </li>
+            <!-- /ko -->
+        </ul>
+    </div>
+</section>
+
+<!-- Page 3 -->
+<section id="MPAddProduct" data-role="page" class="h">
+    <div data-role="header" data-theme="b" >
+        <h1>Add Products</h1>
+    </div>
+    <div data-role="content" data-theme="b">
+        <div class="table">
+            <div class="tr">
+                <div class="td-left"><a id="clear" data-role="button" data-inline="true" class="a-navbar"  href="#MPGroceries" data-icon="home" data-theme="b">List</a></div>
+                <div class="td-right"><a data-role="button" data-inline="true" class="a-navbar" href="#MPProducts" data-icon="check" data-theme="b">Products</a></div>
+            </div>
+        </div>
+        <div class="pl5">
+            Product Name: <span class="info">(Add a new product)</span>
+            <div class="h2"></div>
+            <input type="text" id="productName" name="productName" maxlength="32" data-bind="value: name" />
+            <div class="h12"></div>
+            <input type="checkbox" id="addToList" name="addToList" data-bind="checked : addToList" />
+        </div>
+        <label for="addToList">Include in grocery list.</label>
+        <div class="h2"></div>
+        <a href="#" id="AddProduct" data-role="button" data-bind="click: addProduct">Save</a>
+        <p class="pl5" id="AddProductMessage" data-bind="text: message"></p>
+    </div>
+</section>
+
+<!-- Dialog -->
+<section id="MPDialog" data-role="page" class="h">
+    <div data-role="header" data-theme="b" >
+        <h1>Delete</h1>
+    </div>
+    <div data-role="content" data-theme="b">
+    <h3>Are you sure you want to delete?</h3>
+    <a href="#" id="ok" data-role="button">Ok</a>
+    <a href="#" data-role="button" data-rel="back">Cancel</a>
+    </div>
+</section>
+
+<!-- Error Dialog -->
+<section id="MPError" data-role="page" class="h">
+    <div data-role="header" data-theme="b" >
+        <h1>Error</h1>
+    </div>
+    <div data-role="content" data-theme="b">
+    <h3>There was an error on the page.&nbsp;&nbsp;&nbsp;Please try again!</h3>
+    <a href="#" data-role="button" data-rel="back">Ok</a> 
+    </div>
+</section>
+
+<a href="#MPError" id="show-error-page" data-role="button" data-rel="dialog" data-transition="pop" style="display: none">Show error page</a>
+<a href="#MPDialog" id="show-delete-page" data-role="button" data-rel="dialog" data-transition="pop" style="display: none">Show delete page</a>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.mobile.defaults.js")"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/knockout-2.1.0.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/groceries.js")" ></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+                $.mobile.showPageLoadingMsg();
+            window.grocery.initApp();
+        });
+
+    </script>
+    </body>
+</html>
